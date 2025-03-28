@@ -1,0 +1,101 @@
+<div class="container mt-5">
+  <!--offset pour deplacer droit , card pour bordure header plus grand avec font col-md- pour dimunuer -->
+  <div class="row">
+    <div class="card col-md-3">
+      <div class="card-header text-center">Formulaire d'Evenement</div>
+      <div class="card-body">
+        <form [formGroup]="evenForm" (ngSubmit)="addEvenement()">
+        <div class="form-group">
+          <label class="label-control" for="">Nom</label>
+          <input class="form-control" type="text" formControlName="nom" required>
+          <div *ngIf="submitForm && f2.nom.errors">
+            <span class="text-danger" *ngIf="f2.nom.errors['required']">*Le champ est obligatoire</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="label-control" for="">Date</label>
+          <input class="form-control" type="date" formControlName="date"  required>
+          <div *ngIf="submitForm && f2.date.errors">
+            <span class="text-danger" *ngIf="f2.date.errors['required']">*Le champ est obligatoire</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="label-control" for="">Lieu</label>
+          <input class="form-control" formControlName="lieu" required>
+          <div *ngIf="submitForm && f2.lieu.errors">
+            <span class="text-danger" *ngIf="f2.lieu.errors['required']">*Le champ est obligatoire</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="" class="label-control">Description</label>
+          <input class="form-control" formControlName="description" required>
+          <div *ngIf="submitForm && f2.description.errors">
+            <span class="text-danger" *ngIf="f2.description.errors['required']">*Le champ est obligatoire</span>
+          </div>
+        </div>
+
+          <div class="form-group">
+            <label for="" class="label-control">Organisateur</label>
+            <input class="form-control" formControlName="organisateur" required>
+            <div *ngIf="submitForm && f2.organisateur.errors">
+              <span class="text-danger" *ngIf="f2.organisateur.errors['required']">*Le champ est obligatoire</span>
+            </div>
+          </div>
+
+        <div class="form-group" style="margin-left: 55px">
+          <button class="btn btn-primary" type="submit">
+            {{this.evenement.id != null ? 'Modifier' : 'Enregistrer'}}
+          </button>
+        </div>
+        </form>
+      </div>
+      <br>
+        <label for="">Recherche</label>
+        <input type="text" class="form-control" [(ngModel)]="valueSearch">
+         <br>
+    </div>
+
+
+    <div class="card col-md-9 text-center">
+      <div class="card-header">
+        LISTE DES EVENEMENTS
+        <!--<button class="btn btn-sm btn-dark">Vider</button>-->
+      </div>
+      <div class="card-body">
+        <table class="table table-bordered table-striped" id="table-data">
+          <thead>
+          <tr id="inf">
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Date</th>
+            <th>Lieu</th>
+            <th>Description</th>
+            <th>Organisateur</th>
+            <th colspan="2">Actions</th>
+          </tr>
+          </thead>
+          <tbody id="listes">
+          <tr *ngFor="let e of evenements | filtreEvenement:this.valueSearch; index as i" [ngClass]="i%2===0 ? 'blanc': 'bleu'">
+            <td>{{e.id}}</td>
+            <td>{{e.nom}}</td>
+            <td>{{e.date}}</td>
+            <td>{{e.lieu}}</td>
+            <td>{{e.description}}</td>
+            <td>{{e.organisateur}}</td>
+            <td>
+              <button class="btn btn-outline-danger" (click)="deleteEvenement(e.id)"><i class="fas fa-trash"></i></button>
+              <button class="btn btn-outline-primary" (click)="recharge(e)"><i class="fas fa-pencil-square"></i></button>
+              <button class="btn btn-outline-info" (click)="exportPdf()"><i class="fas fa-upload"></i></button>
+              <button class="btn btn-outline-secondary" (click)="exportExcel()">
+                <i class="fas fa-file-excel"></i>
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+

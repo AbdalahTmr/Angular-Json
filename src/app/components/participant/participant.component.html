@@ -1,0 +1,107 @@
+<div class="container mt-5">
+  <!--offset pour deplacer droit , card pour bordure header plus grand avec font col-md- pour dimunuer -->
+  <div class="row">
+    <div class="card col-md-3">
+      <div class="card-header text-center">Formulaire d'Evenement</div>
+      <div class="card-body">
+        <form [formGroup]="partForm" (ngSubmit)="addParticipant()">
+          <div class="form-group">
+            <label class="label-control" for="">Nom</label>
+            <input class="form-control" type="text" formControlName="nom" required>
+            <div *ngIf="submitForm && f3.nom.errors">
+              <span class="text-danger" *ngIf="f3.nom.errors['required']">*Le champ est obligatoire</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="label-control" for="">Prenom</label>
+            <input class="form-control" type="text" formControlName="prenom"  required>
+            <div *ngIf="submitForm && f3.prenom.errors">
+              <span class="text-danger" *ngIf="f3.prenom.errors['required']">*Le champ est obligatoire</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="label-control" for="">Age</label>
+            <input class="form-control" type="number" formControlName="age" required>
+            <div *ngIf="submitForm && f3.age.errors">
+              <span class="text-danger" *ngIf="f3.age.errors['required']">*Ce champ est obligatoire</span>
+              <span class="text-danger" *ngIf="f3.age.errors['min']">*L'âge doit être supérieur à 0</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>État</label>
+            <select class="form-control" formControlName="etat">
+              <option value="">Sélectionnez un état</option>
+              <option value="Présent">Présent</option>
+              <option value="Absent">Absent</option>
+            </select>
+            <div *ngIf="submitForm && f3.etat.errors">
+              <span class="text-danger" *ngIf="f3.etat.errors['required']">*Ce champ est obligatoire</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Événement</label>
+            <select class="form-control" formControlName="even_id">
+              <option value="">Sélectionnez un événement</option>
+              <option *ngFor="let event of evenements | filtreEvenement:this.valueSearch;" [value]="event.id">{{ event.nom }}</option>
+            </select>
+            <div *ngIf="submitForm && f3.even_id.errors">
+              <span class="text-danger" *ngIf="f3.even_id.errors['required']">*Veuillez choisir un événement</span>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-left: 55px">
+            <button class="btn btn-primary" type="submit">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+      <br>
+      <label for="">Recherche</label>
+      <input type="text" class="form-control" [(ngModel)]="valueSearch">
+      <br>
+    </div>
+
+
+    <div class="card col-md-9 text-center">
+      <div class="card-header">
+        LISTE DES EVENEMENTS
+        <button class="btn btn-sm btn-dark" (click)="clear()">Vider</button>
+      </div>
+      <div class="card-body">
+        <table class="table table-bordered table-striped">
+          <thead>
+          <tr id="inf">
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Prenom</th>
+            <th>Age</th>
+            <th>Etat</th>
+            <th>Evenement</th>
+            <th colspan="2">Actions</th>
+          </tr>
+          </thead>
+          <tbody id="listes">
+          <tr *ngFor="let p of participants | filtreParticipant:this.valueSearch; index as i" [ngClass]="i%2===0 ? 'blanc': 'bleu'">
+            <td>{{p.id}}</td>
+            <td>{{p.nom}}</td>
+            <td>{{p.prenom}}</td>
+            <td>{{p.age}}</td>
+            <td>{{p.etat}}</td>
+            <td>{{p.even_id}}</td>
+            <td>
+              <button class="btn btn-outline-danger far fa-trash-alt" (click)="deleteParticipant(p.id)"><i class="bi bi-trash"></i></button>
+              <button class="btn btn-outline-primary" (click)="recharge(p)"><i class="fas fa-pencil-square"></i></button>
+              <button class="btn btn-outline-warning" (click)="exportPdf()"><i class="fas fa-upload"></i></button>
+              <button class="btn btn-outline-secondary" (click)="exportExcel2()">
+                <i class="fas fa-file-excel"></i>
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+

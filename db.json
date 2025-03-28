@@ -1,0 +1,70 @@
+{
+  "evenements": [
+    {
+      "id": "5S",
+      "nom": "Sabar",
+      "date": "2025-03-08",
+      "lieu": "Dakar",
+      "description": "Dance de femme folle",
+      "organisateur": "Makaveli"
+    },
+    {
+      "id": "7R",
+      "nom": "Reunion",
+      "date": "2025-03-23",
+      "lieu": "US",
+      "description": "Solution informatique",
+      "organisateur": "Massamba"
+    },
+    {
+      "id": "7T",
+      "nom": "Tournoi",
+      "date": "2025-03-18",
+      "lieu": "Bernabeu",
+      "description": "Match de football",
+      "organisateur": "mehmed"
+    },
+    {
+      "id": "5L",
+      "nom": "Ligue",
+      "date": "2025-03-27",
+      "lieu": "Thies",
+      "description": "foot",
+      "organisateur": "LO"
+    }
+  ],
+  "participants": [
+    {
+      "id": "3T",
+      "nom": "Tmr",
+      "prenom": "Abdalah",
+      "age": 12,
+      "etat": "Présent",
+      "even_id": "5S"
+    },
+    {
+      "id": "6D",
+      "nom": "Diallo",
+      "prenom": "Dave",
+      "age": 24,
+      "etat": "Absent",
+      "even_id": "7R"
+    },
+    {
+      "id": "3T",
+      "nom": "Tmr",
+      "prenom": "Abdalah",
+      "age": 23,
+      "etat": "Présent",
+      "even_id": "7R"
+    },
+    {
+      "id": "4F",
+      "nom": "FALL",
+      "prenom": "Modou",
+      "age": 23,
+      "etat": "Absent",
+      "even_id": "7R"
+    }
+  ]
+}
