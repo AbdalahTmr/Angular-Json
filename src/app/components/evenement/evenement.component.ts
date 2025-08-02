@@ -179,9 +179,8 @@ export class EvenementComponent implements OnInit {
       }
     );
   }
-
-  Test():{
-    console.log('Erreur')
-  }
+   test(){
+    console.log('Test reussi')
+   }
 
 }
