@@ -62,4 +62,8 @@ export class AjoutPartComponent implements OnInit{
       }
     )
   }
+
+  Test():{
+    console.log('Erreur')
+  }
 }
