@@ -5,5 +5,4 @@ export class Evenement {
   lieu!:string
   description!:string
   organisateur!:string
-  Entreprise: string
 }
