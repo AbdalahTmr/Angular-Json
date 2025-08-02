@@ -180,4 +180,8 @@ export class EvenementComponent implements OnInit {
     );
   }
 
+  Test():{
+    console.log('Erreur')
+  }
+
 }

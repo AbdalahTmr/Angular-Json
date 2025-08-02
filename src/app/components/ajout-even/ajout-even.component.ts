@@ -61,5 +61,8 @@ export class AjoutEvenComponent implements OnInit {
     )
   }
 
+  Test():{
+    console.log('Erreur')
+  }
 
 }
