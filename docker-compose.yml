@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  angular-app:
+    build: .
+    container_name: examproj_app
+    ports:
+      - "8080:80"
+    networks:
+      - app-network
+    volumes:
+      - nginx-logs:/var/log/nginx
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  nginx-logs:
