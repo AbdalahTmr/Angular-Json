@@ -1,13 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {EvenementService} from "../../services/evenement.service";
 import Swal from 'sweetalert2';
 import {Evenement} from "../../model/evenement";
-import {generate} from "rxjs";
-import {AjoutEvenComponent} from "../ajout-even/ajout-even.component";
 import {EvenformService} from "../../services/evenform.service";
 import {ExportpdfService} from "../../services/exportpdf.service";
-import * as XLSX from "xlsx";
 import {ExportExcelService} from "../../services/export-excel.service";
 @Component({
   selector: 'app-evenement',
@@ -36,11 +33,6 @@ export class EvenementComponent implements OnInit {
   }
   ngOnInit(): void {
     this.allEvenements();
-    this.evenService.allEven().subscribe(data => {
-      this.evenements = data;
-      this.getNbrEven();
-    });
-
   }
 
   addEvenement() {
@@ -74,19 +66,20 @@ export class EvenementComponent implements OnInit {
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
-        this.evenService.deleteEven(id).subscribe(
-          (data)=>{
+        this.evenService.deleteEven(id).subscribe({
+          next: (data)=>{
             this.allEvenements();
+            // Afficher le succès uniquement après la suppression effective
+            swalWithBootstrapButtons.fire({
+              title: "Supprimé!",
+              text: "L'événement a bien été supprimé.",
+              icon: "success"
+            });
           },
-          (error)=>{
+          error: (error)=>{
             console.log(error);
+            Swal.fire('Erreur', 'La suppression a échoué.', 'error');
           }
-        );
-        // this.loadVoitures();
-        swalWithBootstrapButtons.fire({
-          title: "Supprimer!",
-          text: "La ligne a bien été supprimer.",
-          icon: "success"
         });
       } else if (
         /* Read more about handling dismissals below */
@@ -95,7 +88,7 @@ export class EvenementComponent implements OnInit {
         swalWithBootstrapButtons.fire({
           title: "Annuler",
           text: "Votre fichier a ete sauver :)",
-          icon: "error"
+          icon: "info"
         });
       }
     });
@@ -126,18 +119,23 @@ export class EvenementComponent implements OnInit {
     });
   }
 
+  resetForm() {
+    this.evenForm.reset();
+    this.evenement = { id: '', nom: '', date: '', lieu: '', description: '', organisateur: '' };
+  }
+
 
   allEvenements(){
-    this.evenService.allEven().subscribe(
-      (data :Evenement[])=>{
+    this.evenService.allEven().subscribe({
+      next: (data :Evenement[])=>{
         console.log(data)
         this.evenements = data;
-
+        this.getNbrEven();
       },
-      (error)=>{
+      error: (error)=>{
         console.log(error);
       }
-    )
+    });
   }
 
   exportPdf() {

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import jsPDF from "jspdf";
-import {Evenement} from "../model/evenement";
-import autoTable from "jspdf-autotable";
-import {Participant} from "../model/participant";
+import jsPDF from 'jspdf';
+import {Evenement} from '../model/evenement';
+import autoTable from 'jspdf-autotable';
+import {Participant} from '../model/participant';
 
 @Injectable({
   providedIn: 'root'
@@ -11,29 +11,29 @@ export class ExportpdfService {
   evenements: Evenement[]= [];
   constructor() { }
 
-  generatePdf(evenements: Evenement[]) {
+  generatePdf(events: Evenement[]) {
 
     const doc = new jsPDF();
-    doc.setFontSize(16);
-    doc.text('Rapport des Événements', 10, 10);
-    const columns = ["#", "Nom", "Date", "Lieu", "Organisateur", "Description"];
-    const rows = evenements.map((event, index) => [
-      event.id,  // Numéro
-      event.nom,
-      event.date,
-      event.lieu,
-      event.organisateur,
-      event.description
+    // Définir les colonnes et les lignes pour le tableau
+    const head = [['ID', 'Nom', 'Date', 'Lieu', 'Organisateur', 'Description']];
+    const body = events.map(e => [
+      e.id,
+      e.nom,
+      e.date,
+      e.lieu,
+      e.organisateur,
+      e.description
     ]);
 
-// Or use javascript directly:
-    autoTable(doc, {
-      head: [columns],
-      body: rows,
-      styles: {fontStyle: "bolditalic"},
-      headStyles: {fillColor: [44, 62, 80]}
-    })
+    // Ajouter un titre au document
+    doc.setFontSize(18);
+    doc.text('Rapport des Événements', 14, 22);
+
+    // Générer le tableau
+    autoTable(doc, { head, body, startY: 30 });
+
     doc.save('rapport_evenements.pdf');
+
   }
 
 
