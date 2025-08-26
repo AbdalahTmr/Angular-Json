@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -17,7 +17,6 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
-import { NewComponent } from './componenets/new/new.component';
 
 @NgModule({
   declarations: [
@@ -33,8 +32,7 @@ import { NewComponent } from './componenets/new/new.component';
     DashboardComponent,
     SidebarComponent,
     NavbarComponent,
-    MainLayoutComponent,
-    NewComponent,
+    MainLayoutComponent
 
   ],
   imports: [
@@ -45,6 +43,7 @@ import { NewComponent } from './componenets/new/new.component';
     FormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA] 
 })
 export class AppModule { }
