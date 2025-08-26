@@ -1,19 +1,28 @@
 version: '3.8'
 
 services:
-  angular-app:
+  frontend:
     build: .
-    container_name: examproj_app
+    container_name: examproj_frontend
     ports:
-      - "8080:80"
+      - "8080:80" 
     networks:
       - app-network
+    depends_on:
+      - api 
+
+  
+  api:
+    image: node:18-alpine
+    container_name: examproj_api
+    working_dir: /usr/src/app
     volumes:
-      - nginx-logs:/var/log/nginx
+      - ./db.json:/usr/src/app/db.json
+    command: npx json-server --watch db.json --host 0.0.0.0
+    networks:
+      - app-network
 
 networks:
   app-network:
     driver: bridge
-
-volumes:
-  nginx-logs:
+  angular-app:
