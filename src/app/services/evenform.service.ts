@@ -1,19 +1,16 @@
 import { Injectable } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import Swal from "sweetalert2";
 import {EvenementService} from "./evenement.service";
-import {Router} from "@angular/router";
 import {Evenement} from "../model/evenement";
+import { Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EvenformService {
   evenements: Evenement[]= [];
-  constructor(private evenService: EvenementService,
-              private router: Router
-  ) { }
-  evenement:any;
+  constructor(private evenService: EvenementService) { }
+  evenement: Partial<Evenement> = {};
 
   submitForm = false;
   evenForm = new FormGroup({
@@ -43,68 +40,28 @@ export class EvenformService {
     this.evenement ={
       'id': '',
       'nom':'',
-      'date': new Date(),
+      'date': '',
       'lieu':'',
       'description':'',
       'organisateur':'',
     }
   }
-  addEvenement() {
+
+  // La méthode retourne maintenant un Observable.
+  // Le composant qui l'appelle est responsable de la souscription et de la gestion de la réponse (succès/erreur).
+  addEvenement(): Observable<Evenement> {
     this.submitForm = true;
     if (this.evenForm.invalid) {
-      return;
-    } else {
-      if (this.evenForm.value['id'] == '') {
-        this.evenement = this.evenForm.value;
-        this.evenement.id = this.generateId(); // L'ID est maintenant généré de manière sûre.
-
-        this.evenService.addEven(this.evenement).subscribe(
-          () => {
-
-            Swal.fire({
-              position: "top-end",
-              icon: "success",
-              title: "Utilisateur ajoute avec succes",
-              showConfirmButton: false,
-              timer: 1500
-            });
-            this.evenForm.reset();
-            this.evenService.allEven();
-            //Redirection
-            this.router.navigateByUrl('/evenement');
-          },
-          (error) => {
-            console.log("Error");
-          }
-        )
-        // this.users = this.userService.allUser();
-
-
-      } else {
-        this.evenement = this.evenForm.value;
-        this.evenService.updateEven(this.evenement).subscribe(
-          () => {
-            Swal.fire({
-              position: "top-end",
-              icon: "success",
-              title: "Utilisateur modifie avec succes",
-              showConfirmButton: false,
-              timer: 1500
-            });
-
-            this.evenService.allEven().subscribe(
-              (data: Evenement[]) => this.evenements = data
-            );
-
-            this.evenForm.reset();
-            //this.router.navigateByUrl('/utilisateur');
-          },
-          (error) => {
-            console.log(error);
-          }
-        )
-      }
-
+      return throwError(() => new Error('Le formulaire est invalide.'));
     }
+
+    const evenementData = this.evenForm.value as Partial<Evenement>;
+
+    if (evenementData.id) {
+      return this.evenService.updateEven(evenementData as Evenement);
+    }
+
+    evenementData.id = this.generateId();
+    return this.evenService.addEven(evenementData as Evenement);
   }
 }
