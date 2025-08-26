@@ -7,7 +7,7 @@ COPY . .
 RUN npm run build -- --configuration production
 
 FROM nginx:alpine
-COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 COPY --from=build /usr/src/app/dist/examproj /usr/share/nginx/html
 EXPOSE 80
