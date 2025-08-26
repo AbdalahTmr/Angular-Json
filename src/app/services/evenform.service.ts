@@ -31,9 +31,12 @@ export class EvenformService {
 
 
   generateId() {
-    var result = '';
-    result = this.evenement.nom.length + this.evenement.nom[0]
-    return result
+    // Cette méthode est beaucoup plus sûre pour générer un ID unique temporaire.
+    // La méthode précédente pouvait échouer si `this.evenement.nom` n'était pas une chaîne de caractères,
+    // et n'était pas garantie d'être unique.
+    const randomPart = Math.random().toString(36).substring(2, 7);
+    const timePart = Date.now().toString(36).slice(-4);
+    return `${randomPart}${timePart}`.toUpperCase();
   }
 
   clear(){
@@ -53,7 +56,7 @@ export class EvenformService {
     } else {
       if (this.evenForm.value['id'] == '') {
         this.evenement = this.evenForm.value;
-        this.evenement.id = this.generateId();
+        this.evenement.id = this.generateId(); // L'ID est maintenant généré de manière sûre.
 
         this.evenService.addEven(this.evenement).subscribe(
           () => {

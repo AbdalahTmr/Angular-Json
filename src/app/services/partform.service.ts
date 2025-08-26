@@ -28,9 +28,12 @@ export class PartformService {
 
 
   generateId() {
-    var result = '';
-    result = this.participant.nom.length + this.participant.nom[0]
-    return result
+    // Cette méthode est beaucoup plus sûre pour générer un ID unique temporaire.
+    // La méthode précédente pouvait échouer si `this.participant.nom` n'était pas une chaîne de caractères,
+    // et n'était pas garantie d'être unique.
+    const randomPart = Math.random().toString(36).substring(2, 7);
+    const timePart = Date.now().toString(36).slice(-4);
+    return `${randomPart}${timePart}`.toUpperCase();
   }
 
   addParticipant() {
@@ -40,7 +43,7 @@ export class PartformService {
     } else {
       if (this.partForm.value['id'] == '') {
         this.participant = this.partForm.value;
-        this.participant.id = this.generateId();
+        this.participant.id = this.generateId(); // L'ID est maintenant généré de manière sûre.
 
         this.partService.addPart(this.participant).subscribe(
           () => {
