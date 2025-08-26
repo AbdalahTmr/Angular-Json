@@ -1,18 +1,24 @@
 import { Injectable } from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {EvenementService} from "./evenement.service";
-import {Evenement} from "../model/evenement";
-import { Observable, throwError } from 'rxjs';
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import Swal from "sweetalert2";
+import { EvenementService } from "./evenement.service";
+import { Router } from "@angular/router";
+import { Evenement } from "../model/evenement";
 
 @Injectable({
   providedIn: 'root'
 })
 export class EvenformService {
-  evenements: Evenement[]= [];
-  constructor(private evenService: EvenementService) { }
-  evenement: Partial<Evenement> = {};
+  evenements: Evenement[] = [];
+  evenement: Evenement | any;
+
+  constructor(
+    private evenService: EvenementService,
+    private router: Router
+  ) {}
 
   submitForm = false;
+
   evenForm = new FormGroup({
     id: new FormControl(''),
     nom: new FormControl('', [Validators.required]),
@@ -26,42 +32,70 @@ export class EvenformService {
     return this.evenForm.controls;
   }
 
-
   generateId() {
-    // Cette méthode est beaucoup plus sûre pour générer un ID unique temporaire.
-    // La méthode précédente pouvait échouer si `this.evenement.nom` n'était pas une chaîne de caractères,
-    // et n'était pas garantie d'être unique.
-    const randomPart = Math.random().toString(36).substring(2, 7);
-    const timePart = Date.now().toString(36).slice(-4);
-    return `${randomPart}${timePart}`.toUpperCase();
+    return this.evenement.nom.length + this.evenement.nom[0];
   }
 
-  clear(){
-    this.evenement ={
-      'id': '',
-      'nom':'',
-      'date': '',
-      'lieu':'',
-      'description':'',
-      'organisateur':'',
-    }
+  clear() {
+    this.evenement = {
+      id: '',
+      nom: '',
+      date: new Date(),
+      lieu: '',
+      description: '',
+      organisateur: '',
+    };
   }
 
-  // La méthode retourne maintenant un Observable.
-  // Le composant qui l'appelle est responsable de la souscription et de la gestion de la réponse (succès/erreur).
-  addEvenement(): Observable<Evenement> {
+  addEvenement() {
     this.submitForm = true;
     if (this.evenForm.invalid) {
-      return throwError(() => new Error('Le formulaire est invalide.'));
+      return;
+    } else {
+      if (this.evenForm.value['id'] == '') {
+        this.evenement = this.evenForm.value;
+        this.evenement.id = this.generateId();
+
+        this.evenService.addEven(this.evenement).subscribe(
+          () => {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Utilisateur ajouté avec succès",
+              showConfirmButton: false,
+              timer: 1500
+            });
+            this.evenForm.reset();
+            this.evenService.allEven();
+            this.router.navigateByUrl('/evenement');
+          },
+          (error) => {
+            console.log("Error", error);
+          }
+        );
+      } else {
+        this.evenement = this.evenForm.value;
+        this.evenService.updateEven(this.evenement).subscribe(
+          () => {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Utilisateur modifié avec succès",
+              showConfirmButton: false,
+              timer: 1500
+            });
+
+            this.evenService.allEven().subscribe(
+              (data: Evenement[]) => this.evenements = data
+            );
+
+            this.evenForm.reset();
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      }
     }
-
-    const evenementData = this.evenForm.value as Partial<Evenement>;
-
-    if (evenementData.id) {
-      return this.evenService.updateEven(evenementData as Evenement);
-    }
-
-    evenementData.id = this.generateId();
-    return this.evenService.addEven(evenementData as Evenement);
   }
 }

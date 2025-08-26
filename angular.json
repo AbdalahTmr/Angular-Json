@@ -41,7 +41,7 @@
               "src/assets/soft-ui/assets/js/core/bootstrap.bundle.min.js",
               "src/assets/soft-ui/assets/js/plugins/perfect-scrollbar.min.js",
               "src/assets/soft-ui/assets/js/plugins/smooth-scrollbar.min.js",
-              "src/assets/soft-ui/assets/js/soft-ui-dashboard.min.js/soft-ui-dashboard.min.js"
+              "src/assets/soft-ui/assets/js/soft-ui-dashboard.min.js"
             ]
           },
           "configurations": {

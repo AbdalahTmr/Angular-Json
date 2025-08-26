@@ -1,30 +1,33 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Evenement} from "../model/evenement";
-import {Observable} from "rxjs";
+import { HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { Evenement } from "../model/evenement";
 
 @Injectable({
   providedIn: 'root'
 })
 export class EvenementService {
-  constructor(private httpClient : HttpClient) { }
-  private url : string = 'http://localhost:3000/evenements';
-  addEven(even :Evenement){
-    return this.httpClient.post(this.url,even);
+  private url: string = 'http://localhost:3000/evenements';
+
+  constructor(private httpClient: HttpClient) {}
+
+  addEven(even: Evenement): Observable<Evenement> {
+    return this.httpClient.post<Evenement>(this.url, even);
   }
 
   allEven(): Observable<Evenement[]> {
     return this.httpClient.get<Evenement[]>(this.url);
   }
-  deleteEven(id:string){
-    return this.httpClient.delete(this.url+'/'+id);
-  }
-  updateEven(even :Evenement){
-    return  this.httpClient.put(this.url+'/'+even.id,even)
+
+  deleteEven(id: string): Observable<void> {
+    return this.httpClient.delete<void>(`${this.url}/${id}`);
   }
 
+  updateEven(even: Evenement): Observable<Evenement> {
+    return this.httpClient.put<Evenement>(`${this.url}/${even.id}`, even);
+  }
 
-  getByid(id:string){
-    return this.httpClient.get<Evenement>(this.url+"/"+id);
+  getByid(id: string): Observable<Evenement> {
+    return this.httpClient.get<Evenement>(`${this.url}/${id}`);
   }
 }
