@@ -64,6 +64,4 @@ export class AjoutPartComponent implements OnInit{
     console.log('new test')
   }
 
-  testing:{
-  }
 }
