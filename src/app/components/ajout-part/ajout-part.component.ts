@@ -61,7 +61,7 @@ export class AjoutPartComponent implements OnInit{
     )
   }
   test(){
-    console.log('new test')
-  };
+    console.log('new test for jenkins')
+  }
 
 }
