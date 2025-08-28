@@ -63,7 +63,7 @@ export class AjoutEvenComponent implements OnInit {
   }
 
   test(){
-    console.log('Erreur ')
+    console.log('Erreur lors du chargement du fichier')
   }
 
 }
