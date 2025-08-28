@@ -33,6 +33,7 @@ export class AjoutEvenComponent implements OnInit {
     if (this.route.snapshot.params['id']) {
       this.getById();
     }
+    this.test()
   }
 
   get f2() {
@@ -62,7 +63,7 @@ export class AjoutEvenComponent implements OnInit {
   }
 
   test(){
-    console.log('Erreur')
+    console.log('Erreur ')
   }
 
 }
