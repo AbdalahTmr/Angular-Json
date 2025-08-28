@@ -1,9 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {EvenementService} from "../../services/evenement.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {EvenformService} from "../../services/evenform.service";
-import {Evenement} from "../../model/evenement";
 import {ParticipantService} from "../../services/participant.service";
 import {PartformService} from "../../services/partform.service";
 import {Participant} from "../../model/participant";
