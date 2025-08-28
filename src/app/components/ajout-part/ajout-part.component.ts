@@ -32,7 +32,6 @@ export class AjoutPartComponent implements OnInit{
     if (this.route.snapshot.params['id']) {
       this.getById();
     }
-    this.test()
   }
 
   get f3() {
