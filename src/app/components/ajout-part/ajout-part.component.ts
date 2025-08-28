@@ -32,7 +32,6 @@ export class AjoutPartComponent implements OnInit{
     if (this.route.snapshot.params['id']) {
       this.getById();
     }
-    this.test()
   }
 
   get f3() {
@@ -60,8 +59,4 @@ export class AjoutPartComponent implements OnInit{
       }
     )
   }
-  test(){
-    console.log('new test for jenkins')
-  }
-
 }
